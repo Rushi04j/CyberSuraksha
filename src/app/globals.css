@@ -6,82 +6,82 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  /* Slate 900 */
+  /* PREMIUM LIGHT MODE */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
 
-  /* Cyber Blue Brand Colors */
-  --primary: #2563eb;
-  /* Blue 600 */
-  --primary-foreground: #ffffff;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
 
-  --secondary: #f1f5f9;
-  /* Slate 100 */
-  --secondary-foreground: #0f172a;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
 
-  --muted: #f8fafc;
-  /* Slate 50 */
-  --muted-foreground: #64748b;
-  /* Slate 500 */
+  --primary: 221.2 83.2% 53.3%;
+  /* Vibrant Royal Blue */
+  --primary-foreground: 210 40% 98%;
 
-  --accent: #f59e0b;
-  /* Amber 500 - for warnings/highlights */
-  --accent-foreground: #ffffff;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
 
-  --destructive: #ef4444;
-  /* Red 500 */
-  --destructive-foreground: #ffffff;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
 
-  --border: #e2e8f0;
-  /* Slate 200 */
-  --input: #e2e8f0;
-  --ring: #2563eb;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
 
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: #020617;
-  /* Slate 950 - Deep Cyber Background */
-  --foreground: #f8fafc;
-  /* Slate 50 */
+  /* PREMIUM DARK MODE - Deep Cyber Midnight */
+  --background: 222.2 84% 4.9%;
+  /* Rich Dark Blue/Black */
+  --foreground: 210 40% 98%;
 
-  --primary: #3b82f6;
-  /* Blue 500 - Electric Blue */
-  --primary-foreground: #0f172a;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
 
-  --secondary: #1e293b;
-  /* Slate 800 */
-  --secondary-foreground: #f8fafc;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
 
-  --muted: #0f172a;
-  /* Slate 900 */
-  --muted-foreground: #94a3b8;
-  /* Slate 400 */
+  --primary: 217.2 91.2% 59.8%;
+  /* Electric Neon Blue */
+  --primary-foreground: 222.2 47.4% 11.2%;
 
-  --accent: #fbbf24;
-  /* Amber 400 */
-  --accent-foreground: #0f172a;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
 
-  --destructive: #ef4444;
-  --destructive-foreground: #f8fafc;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
 
-  --border: #1e293b;
-  /* Slate 800 */
-  --input: #1e293b;
-  --ring: #3b82f6;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism Utilities */
+/* Glassmorphism Utilities with HSL opacity */
 .glassy {
-  @apply bg-white/70 dark:bg-slate-900/60 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-lg;
+  @apply bg-white/70 dark:bg-slate-950/60 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-lg;
 }
 
 /* Animations */
