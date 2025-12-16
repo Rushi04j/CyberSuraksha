@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, Shield, Phone } from "lucide-react"
 import { LanguageToggle } from "@/components/language-toggle"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -43,7 +44,8 @@ export function Header() {
 
           {/* Emergency Button & Auth */}
           <div className="flex items-center space-x-4">
-            <div className="hidden sm:block">
+            <div className="hidden sm:flex items-center space-x-2">
+              <ThemeToggle />
               <LanguageToggle />
             </div>
 
@@ -67,8 +69,11 @@ export function Header() {
               <SheetContent side="right" className="w-80">
                 <div className="flex flex-col space-y-4 mt-8">
                   <div className="flex justify-between items-center px-2">
-                    <span className="font-semibold">Language</span>
-                    <LanguageToggle />
+                    <span className="font-semibold">Preferences</span>
+                    <div className="flex items-center space-x-2">
+                      <ThemeToggle />
+                      <LanguageToggle />
+                    </div>
                   </div>
                   {navigation.map((item) => (
                     <Link
