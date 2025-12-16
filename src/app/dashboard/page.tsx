@@ -7,7 +7,6 @@ import { api } from "@/lib/api"
 import { Complaint } from "@/lib/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { FileText, Clock, CheckCircle, AlertTriangle, ArrowRight, Plus, Shield } from "lucide-react"
 import Link from "next/link"
 
@@ -102,7 +101,6 @@ export default function DashboardPage() {
             <p className="text-muted-foreground">{t.common.welcome}, {user?.name?.split(" ")[0] || "User"}. {t.dashboard.subtitle}</p>
           </div>
           <div className="flex gap-2">
-            <ThemeToggle />
             <Button
               variant={privacyMode ? "default" : "outline"}
               onClick={() => setPrivacyMode(!privacyMode)}
