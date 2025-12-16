@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  /* Slate 900 */
+
+  /* Cyber Blue Brand Colors */
+  --primary: #2563eb;
+  /* Blue 600 */
+  --primary-foreground: #ffffff;
+
+  --secondary: #f1f5f9;
+  /* Slate 100 */
+  --secondary-foreground: #0f172a;
+
+  --muted: #f8fafc;
+  /* Slate 50 */
+  --muted-foreground: #64748b;
+  /* Slate 500 */
+
+  --accent: #f59e0b;
+  /* Amber 500 - for warnings/highlights */
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  /* Red 500 */
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e8f0;
+  /* Slate 200 */
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #020617;
+  /* Slate 950 - Deep Cyber Background */
+  --foreground: #f8fafc;
+  /* Slate 50 */
+
+  --primary: #3b82f6;
+  /* Blue 500 - Electric Blue */
+  --primary-foreground: #0f172a;
+
+  --secondary: #1e293b;
+  /* Slate 800 */
+  --secondary-foreground: #f8fafc;
+
+  --muted: #0f172a;
+  /* Slate 900 */
+  --muted-foreground: #94a3b8;
+  /* Slate 400 */
+
+  --accent: #fbbf24;
+  /* Amber 400 */
+  --accent-foreground: #0f172a;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+
+  --border: #1e293b;
+  /* Slate 800 */
+  --input: #1e293b;
+  --ring: #3b82f6;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Utilities */
+.glassy {
+  @apply bg-white/70 dark:bg-slate-900/60 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-lg;
+}
+
+/* Animations */
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 8s ease infinite;
+}
+
+/* Scrollbar Polish */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-600;
+}
