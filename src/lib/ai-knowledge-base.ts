@@ -1,49 +1,123 @@
-export interface KnowledgeItem {
-    keywords: string[];
-    answer: string;
+import { legalKnowledgeBase, LegalStatute, findLegalProvision } from "./legal-knowledge-base"
+
+// Intent Types
+type Intent = 'REPORT_FRAUD' | 'LEGAL_INFO' | 'PROCEDURE' | 'EVIDENCE' | 'DRAFTING' | 'RIGHTS' | 'UNKNOWN'
+
+// Structured Response Interface
+export interface AIResponse {
+    text: string
+    legalInfo?: LegalStatute
+    steps?: string[]
+    evidenceRequired?: string[]
+    recommendedTool?: {
+        name: string
+        url: string
+    }
+    riskLevel?: 'Golden Hour (High Chance)' | 'Delayed (Lower Chance)' | 'Unknown'
+    source: 'Official Govt Sources via VLKB' | 'General Guidance'
 }
 
-export const knowledgeBase: KnowledgeItem[] = [
-    {
-        keywords: ["file", "report", "police", "complaint", "fir"],
-        answer: "To file a police report (FIR), you can visit your nearest police station or use the online portal if available in your state. You will need to provide details of the incident, your identification, and any evidence you have. Under the IT Act, cybercrimes can be reported to any cyber crime cell irrespective of jurisdiction."
-    },
-    {
-        keywords: ["anonymous", "identity", "hide", "secret"],
-        answer: "Yes, you can report cybercrimes anonymously through various government portals like the National Cyber Crime Reporting Portal (cybercrime.gov.in). Our platform also provides an 'Emergency / Anonymous Report' feature for high-priority incidents where your identity remains protected."
-    },
-    {
-        keywords: ["evidence", "proof", "screenshot", "save"],
-        answer: "Crucial evidence includes screenshots of chats/posts, URLs of the content, transaction IDs for financial fraud, email headers, and device logs. Do not delete any data. Save everything on a separate drive if possible."
-    },
-    {
-        keywords: ["bullying", "harassment", "stalking", "troll"],
-        answer: "Cyberbullying and stalking are punishable offenses under Section 66A of the IT Act (for offensive messages - *subject to current legal standing*) and Section 354D of the IPC (for stalking). You should block the user, save evidence, and file a report immediately. You can also report the profile to the social media platform."
-    },
-    {
-        keywords: ["fraud", "money", "bank", "scam", "phishing", "upi"],
-        answer: "For financial fraud, call 1930 (National Cyber Crime Helpline) immediately to freeze the funds. Report the transaction to your bank and file a complaint on cybercrime.gov.in. Early reporting increases the chances of recovering your money."
-    },
-    {
-        keywords: ["hack", "hacked", "account", "password"],
-        answer: "If your account is hacked, immediately try to reset your password using the 'Forgot Password' option. Enable Two-Factor Authentication (2FA). Check your connected devices and log out of all unknown sessions. Inform your contacts not to trust messages from your account."
-    },
-    {
-        keywords: ["rights", "lawyer", "arrest"],
-        answer: "You have the right to know the grounds of arrest, the right to inform a family member, and the right to consult a lawyer (Article 22 of the Constitution). For bailable offenses, you have the right to be released on bail immediately."
-    },
-    {
-        keywords: ["time", "long", "duration"],
-        answer: "The duration of a legal case varies significantly based on complexity and court load. However, cyber cells aim for preliminary investigation within 14-30 days. Regular follow-ups with your Investigating Officer (IO) can help track progress."
-    },
-    {
-        keywords: ["hello", "hi", "hey", "greetings"],
-        answer: "Hello! I am your AI Legal Assistant. I can help you understand cyber laws, filing procedures, and safety tips. How can I assist you today?"
-    },
-    {
-        keywords: ["thank", "thanks", "bye"],
-        answer: "You're welcome! Stay safe and vigilant. Remember, 'CyberSuraksha' is always here to help."
-    }
-];
+const MANDATORY_DISCLAIMER = "\n\n(⚖️ This guidance is based on official Government of India cybercrime procedures and advisories. It does not replace personalized legal advice.)"
 
-export const defaultAnswer = "I'm not sure about that specific query. However, generally, for any cybercrime, you should preserve evidence and contact the Cyber Crime Helpline at 1930. Could you rephrase your question with keywords like 'fraud', 'bullying', or 'filing a report'?";
+// Helper to determine risk based on time (simple keyword check)
+function assessRisk(input: string): AIResponse['riskLevel'] {
+    const lower = input.toLowerCase()
+    if (lower.includes('just now') || lower.includes('1 hour') || lower.includes('2 hour') || lower.includes('minutes')) {
+        return 'Golden Hour (High Chance)'
+    }
+    if (lower.includes('yesterday') || lower.includes('2 days') || lower.includes('week') || lower.includes('month')) {
+        return 'Delayed (Lower Chance)'
+    }
+    return 'Unknown'
+}
+
+export const getAIResponse = (input: string): AIResponse => {
+    const lowerInput = input.toLowerCase()
+
+    // 1. Identify Crime Type using VLKB keywords
+    let matchedStatute: LegalStatute | undefined
+    if (lowerInput.includes('money') || lowerInput.includes('fraud') || lowerInput.includes('upi') || lowerInput.includes('bank')) {
+        matchedStatute = findLegalProvision('financial')
+    } else if (lowerInput.includes('photo') || lowerInput.includes('video') || lowerInput.includes('harass') || lowerInput.includes('blackmail')) {
+        matchedStatute = findLegalProvision('sextortion') // or harassment
+    } else if (lowerInput.includes('identity') || lowerInput.includes('fake profile') || lowerInput.includes('impersonat')) {
+        matchedStatute = findLegalProvision('identity')
+    }
+
+    // 2. Draft Assistance Intent
+    if (lowerInput.includes('draft') || lowerInput.includes('write') || lowerInput.includes('fir') || lowerInput.includes('complaint letter')) {
+        return {
+            text: "I can help you draft a legally compliant FIR application. This document can be submitted to your local police station.",
+            recommendedTool: {
+                name: "AI FIR Drafter",
+                url: "/tools/fir-drafter"
+            },
+            source: 'Official Govt Sources via VLKB'
+        }
+    }
+
+    // 3. Digital Arrest / Fake Police Intent
+    if (lowerInput.includes('police calling') || lowerInput.includes('arrest') || lowerInput.includes('video call') || lowerInput.includes('cbi')) {
+        return {
+            text: "STOP! Indian Police, CBI, or Customs NEVER make video calls to investigate or ask for money. This is a 'Digital Arrest' scam.",
+            steps: [
+                "Cut the call immediately.",
+                "Do NOT transfer any money.",
+                "Report the number on Chakshu Portal (Sanchar Saathi).",
+                "Dial 1930 to report attempted fraud."
+            ],
+            recommendedTool: {
+                name: "Digital Arrest Simulator (Learn More)",
+                url: "/tools/digital-arrest"
+            },
+            source: 'Official Govt Sources via VLKB'
+        }
+    }
+
+    // 4. Incident Reporting Flow (Financial)
+    if (matchedStatute) {
+        const risk = assessRisk(input)
+        const refundChanceText = risk === 'Golden Hour (High Chance)'
+            ? "You are within the 'Golden Hour'. Immediate reporting increases chances of freezing funds."
+            : risk === 'Delayed (Lower Chance)'
+                ? "Since some time has passed, immediate action is critical to trace the money trail."
+                : "Timely reporting is key."
+
+        return {
+            text: `I understand you are facing a case of ${matchedStatute.crimeType}. ${refundChanceText}\n\nAccording to ${matchedStatute.source}, this is a punishable offense.`,
+            legalInfo: matchedStatute,
+            steps: [
+                "Call 1930 immediately (National Cyber Crime Helpline).",
+                "File a complaint at cybercrime.gov.in.",
+                "Visit your nearest police station with the evidence below."
+            ],
+            evidenceRequired: [
+                "Transaction ID / Reference Number (UTR)",
+                "Screenshots of chat/messages",
+                "Bank Statement highlighting the deduction",
+                "Suspect's phone number/UPI ID"
+            ],
+            riskLevel: risk,
+            source: 'Official Govt Sources via VLKB'
+        }
+    }
+
+    // 5. General / Default / Rights
+    if (lowerInput.includes('jurisdiction') || lowerInput.includes('refus')) {
+        return {
+            text: "Police cannot refuse to register your complaint based on jurisdiction. This is your right under 'Zero FIR'.",
+            steps: [
+                "Request them to file a 'Zero FIR'.",
+                "They are legally bound to register it and transfer it to the relevant station.",
+                "Cite Ministry of Home Affairs Advisory (2020)."
+            ],
+            source: 'Official Govt Sources via VLKB'
+        }
+    }
+
+    // Fallback
+    return {
+        text: "I can guide you on Cybercrime laws (BNS 2023) and reporting procedures. Please describe the incident (e.g. 'UPI fraud', 'Blackmail').\n\nFor emergencies, always dial 1930.",
+        source: 'General Guidance'
+    }
+}

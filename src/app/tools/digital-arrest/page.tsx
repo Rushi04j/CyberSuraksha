@@ -12,24 +12,31 @@ export default function DigitalArrestSimulator() {
 
     // Simulate incoming call ring
     useEffect(() => {
+        let timer: NodeJS.Timeout
         if (state === 'incoming') {
-            const timer = setInterval(() => {
+            timer = setInterval(() => {
                 setTimeLeft(prev => {
-                    if (prev <= 0) {
-                        setState('education') // Missed call -> Safe
+                    if (prev <= 1) {
+                        setState('education')
                         return 0
                     }
                     return prev - 1
                 })
             }, 1000)
-            return () => clearInterval(timer)
+        } else if (state === 'connected') {
+            // Transition to Scare tactic after 3 seconds
+            timer = setTimeout(() => {
+                setState('scare')
+            }, 3000)
+        }
+        return () => {
+            clearInterval(timer)
+            clearTimeout(timer)
         }
     }, [state])
 
     const handleAccept = () => {
         setState('connected')
-        // After 3 seconds, show the "Scare" tactic
-        setTimeout(() => setState('scare'), 3000)
     }
 
     const handleReject = () => {

@@ -39,6 +39,7 @@ export default function MuleSearchPage() {
 
                 <div className="flex gap-2 mb-8">
                     <Input
+                        id="mule-input"
                         placeholder="Enter Phone Number / UPI ID..."
                         className="h-14 text-lg bg-slate-900 border-slate-700"
                         value={query}
