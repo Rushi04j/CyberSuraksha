@@ -23,4 +23,7 @@ export interface Complaint {
     createdAt: string;
     evidenceFiles?: string[];
     policeNotes?: string;
+    aiPriorityScore?: number; // 0-100
+    assignedOfficer?: string;
+    slaDeadline?: string;
 }

@@ -100,58 +100,99 @@ export default function PoliceDashboardPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>ID</TableHead>
+                <TableHead>Case ID</TableHead>
+                <TableHead>AI Priority</TableHead> {/* New AI Priority Column */}
                 <TableHead>{t.complaint.steps.details}</TableHead>
-                <TableHead>{t.common.date}</TableHead>
-                <TableHead>Urgency</TableHead>
+                <TableHead>SLA / Time Elapsed</TableHead> {/* New SLA Column */}
+                <TableHead>Assigned To</TableHead> {/* New Officer Column */}
                 <TableHead>{t.common.status}</TableHead>
                 <TableHead className="text-right">{t.common.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredComplaints.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-mono text-xs text-muted-foreground">{item.id}</TableCell>
-                  <TableCell>
-                    <div className="font-medium">{item.title}</div>
-                    <div className="text-xs text-muted-foreground">{item.category}</div>
-                  </TableCell>
-                  <TableCell className="text-sm">{new Date(item.createdAt).toLocaleDateString()}</TableCell>
-                  <TableCell>
-                    <Badge variant={item.urgency === 'Emergency' ? 'destructive' : 'outline'}>
-                      {item.urgency}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant="secondary"
-                      className={
-                        item.status === 'Resolved' ? 'bg-green-100 text-green-800 hover:bg-green-200' :
-                          item.status === 'In Progress' ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' :
-                            'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                      }
-                    >
-                      {item.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Select onValueChange={(val) => handleStatusUpdate(item.id, val)}>
-                      <SelectTrigger className="w-[130px] ml-auto h-8 text-xs">
-                        <SelectValue placeholder={t.common.actions} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Pending">{t.dashboard.pending}</SelectItem>
-                        <SelectItem value="In Progress">Investigate</SelectItem>
-                        <SelectItem value="Resolved">Resolve</SelectItem>
-                        <SelectItem value="Closed">Close Case</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {filteredComplaints.map((item) => {
+                // Mock AI Score if missing (for demonstration)
+                const aiScore = item.aiPriorityScore || (item.urgency === 'Emergency' ? 95 : item.urgency === 'High' ? 88 : item.urgency === 'Medium' ? 60 : 35);
+
+                // Mock SLA Calculation
+                const hoursElapsed = Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / (1000 * 60 * 60));
+                const slaLimit = 24; const isOverdue = hoursElapsed > slaLimit;
+
+                return (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-mono text-xs text-muted-foreground">{item.id}</TableCell>
+
+                    {/* AI Priority Cell */}
+                    <TableCell>
+                      <div className="flex flex-col items-start gap-1">
+                        <Badge variant="outline" className={`
+                            ${aiScore >= 90 ? 'bg-red-50 text-red-700 border-red-200' :
+                            aiScore >= 60 ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-slate-50 text-slate-700'}
+                        `}>
+                          {aiScore >= 90 ? '🔴 Critical' : aiScore >= 60 ? '🟡 Medium' : '🟢 Low'} ({aiScore}%)
+                        </Badge>
+                      </div>
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="font-medium">{item.title}</div>
+                      <div className="text-xs text-muted-foreground">{item.category}</div>
+                    </TableCell>
+
+                    {/* SLA Timer Cell */}
+                    <TableCell>
+                      <div className="text-xs">
+                        <span className={`font-bold ${isOverdue ? 'text-red-600' : 'text-slate-600'}`}>
+                          ⏱ {hoursElapsed}h elapsed
+                        </span>
+                        <div className="text-[10px] text-muted-foreground">SLA: 24h</div>
+                      </div>
+                    </TableCell>
+
+                    {/* Assigned Officer Cell */}
+                    <TableCell>
+                      <div className="text-xs font-medium">
+                        {item.assignedOfficer ? (
+                          <span className="flex items-center gap-1 text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                            👮‍♂️ {item.assignedOfficer}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground italic">Unassigned</span>
+                        )}
+                      </div>
+                    </TableCell>
+
+                    <TableCell>
+                      <Badge
+                        variant="secondary"
+                        className={
+                          item.status === 'Resolved' ? 'bg-green-100 text-green-800 hover:bg-green-200' :
+                            item.status === 'In Progress' ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' :
+                              'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                        }
+                      >
+                        {item.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Select onValueChange={(val) => handleStatusUpdate(item.id, val)}>
+                        <SelectTrigger className="w-[130px] ml-auto h-8 text-xs">
+                          <SelectValue placeholder={t.common.actions} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Pending">{t.dashboard.pending}</SelectItem>
+                          <SelectItem value="In Progress">Investigate</SelectItem>
+                          <SelectItem value="Resolved">Resolve</SelectItem>
+                          <SelectItem value="Closed">Close Case</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
               {filteredComplaints.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
+                  <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
                     {t.dashboard.noActivity}
                   </TableCell>
                 </TableRow>
