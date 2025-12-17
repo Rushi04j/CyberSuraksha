@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
@@ -45,6 +46,7 @@ function Stepper({ totalSteps, currentStep }: { totalSteps: number; currentStep:
 }
 
 export default function FileComplaintPage() {
+  const router = useRouter()
   const totalSteps = 5
   const [currentStep, setCurrentStep] = useState(1)
   const [isRecording, setIsRecording] = useState(false)
@@ -109,10 +111,14 @@ export default function FileComplaintPage() {
     setCurrentStep(currentStep - 1)
   }
 
+
+
   const handleSubmit = () => {
     if (validateStep()) {
-      alert("Complaint submitted successfully! You will receive a confirmation email shortly.")
-      // Add real submission logic here
+      // alert("Complaint submitted successfully! You will receive a confirmation email shortly.")
+      const refId = `REF-${Math.floor(1000 + Math.random() * 9000)}`;
+      const category = formData.crimeType;
+      router.push(`/complaint-success?id=${refId}&category=${category}`)
     }
   }
 

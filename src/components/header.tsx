@@ -14,7 +14,8 @@ export function Header() {
 
   const navigation = [
     { name: "Home", href: "/" },
-    { name: "Safety Resources", href: "/safety" },
+    { name: "Verify Tool", href: "/verify" },
+    { name: "Awareness Hub", href: "/safety" },
     { name: "AI Assistant", href: "/ai-assistant" },
   ]
 
