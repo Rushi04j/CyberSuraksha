@@ -4,22 +4,26 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/components/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-base font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-5 shrink-0 outline-none shadow-lg focus-visible:ring-4 focus-visible:ring-primary/30 focus-visible:ring-offset-2 group select-none",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-5 shrink-0 shadow-sm",
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-tr from-blue-700 via-blue-500 to-blue-600 text-white hover:scale-[1.03] hover:shadow-xl active:scale-100 active:bg-blue-800/80 aria-[current=true]:ring-2 aria-[current=true]:ring-blue-500 pulse",
-        destructive: "bg-gradient-to-tr from-red-700 via-red-500 to-red-600 text-white hover:scale-105 hover:shadow-xl active:scale-100 active:bg-red-800 aria-[current=true]:ring-2 aria-[current=true]:ring-red-500",
-        outline: "border border-gray-300 bg-white/60 backdrop-blur-lg text-gray-800 shadow-sm hover:bg-gray-100 hover:border-primary/40 active:bg-gray-200",
-        secondary: "bg-gradient-to-tr from-gray-200 to-gray-400 text-gray-900 hover:bg-gray-300 hover:shadow-lg active:bg-gray-400",
-        ghost: "text-gray-700 hover:bg-gray-50 hover:shadow-sm active:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100",
-        link: "text-blue-700 underline-offset-4 hover:underline hover:text-blue-800 focus-visible:ring-blue-500/30",
+        default:
+          "bg-primary text-primary-foreground shadow shadow-primary/30 hover:bg-primary/90 hover:shadow-primary/50",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-11 px-6 py-2.5 has-[>svg]:px-5 text-base rounded-xl",
-        sm: "h-9 rounded-md gap-1.5 px-4 text-sm has-[>svg]:px-3",
-        lg: "h-14 rounded-2xl px-8 text-lg has-[>svg]:px-7",
-        icon: "size-11",
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
       },
       pulse: {
         true: "animate-pulse",

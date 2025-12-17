@@ -4,18 +4,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, AlertTriangle, TrendingUp } from "lucide-react"
 
+import { useLanguage } from "@/context/language-context"
+
 export default function HeatmapPage() {
+    const { t } = useLanguage()
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <div>
                     <h1 className="text-3xl font-bold flex items-center gap-2">
-                        <MapPin className="text-red-600 h-8 w-8" /> Live Cyber Crime Heatmap
+                        <MapPin className="text-red-600 h-8 w-8" /> {t.tools.heatmapTitle}
                     </h1>
-                    <p className="text-muted-foreground">Real-time visualization of reported cyber incidents across India.</p>
+                    <p className="text-muted-foreground">{t.tools.heatmapDesc}</p>
                 </div>
                 <Badge variant="destructive" className="text-lg px-4 py-1 animate-pulse">
-                    <div className="h-2 w-2 rounded-full bg-white mr-2" /> LIVE UPDATES
+                    <div className="h-2 w-2 rounded-full bg-white mr-2" /> {t.dashboard.liveAlerts}
                 </Badge>
             </div>
 
@@ -57,7 +61,7 @@ export default function HeatmapPage() {
                 <div className="space-y-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-lg">Trending Scams (Last 24h)</CardTitle>
+                            <CardTitle className="text-lg">{t.dashboard.recentActivity}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-100">
@@ -79,7 +83,7 @@ export default function HeatmapPage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-lg">Safe Zones</CardTitle>
+                            <CardTitle className="text-lg">{t.safety.title} (Zones)</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <p className="text-sm text-muted-foreground mb-4">Regions with lowest reported activity this week.</p>

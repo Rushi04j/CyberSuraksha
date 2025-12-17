@@ -31,8 +31,8 @@ export default function DashboardLayout({
     ]
 
     const SidebarContent = () => (
-        <div className="flex flex-col h-full bg-card text-card-foreground">
-            <div className="p-6 border-b">
+        <div className="flex flex-col h-full bg-popover text-popover-foreground">
+            <div className="p-6 border-b border-border">
                 <Link href="/" className="flex items-center gap-2 font-bold text-xl">
                     <Shield className="h-6 w-6 text-primary" />
                     <span>CyberSuraksha</span>
@@ -59,7 +59,7 @@ export default function DashboardLayout({
                     })}
                 </nav>
             </div>
-            <div className="p-4 border-t bg-muted/20">
+            <div className="p-4 border-t border-border bg-muted/20">
                 <div className="flex items-center gap-3 mb-4 px-2">
                     <div className="bg-primary/10 p-2 rounded-full ring-1 ring-primary/20">
                         <UserIcon className="h-5 w-5 text-primary" />
@@ -80,9 +80,9 @@ export default function DashboardLayout({
     )
 
     return (
-        <div className="min-h-screen bg-gray-50/50 dark:bg-gray-950">
+        <div className="min-h-screen bg-background text-foreground">
             {/* Mobile Header */}
-            <div className="lg:hidden flex items-center justify-between p-4 border-b bg-white dark:bg-gray-900 sticky top-0 z-20">
+            <div className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-popover text-popover-foreground sticky top-0 z-20">
                 <div className="flex items-center gap-2 font-bold">
                     <Shield className="h-6 w-6 text-primary" />
                     <span>CyberSuraksha</span>
@@ -101,12 +101,12 @@ export default function DashboardLayout({
 
             <div className="flex h-screen overflow-hidden">
                 {/* Desktop Sidebar */}
-                <aside className="hidden lg:flex w-64 flex-col border-r bg-white dark:bg-gray-900 sticky top-0 h-screen">
+                <aside className="hidden lg:flex w-64 flex-col border-r border-border bg-popover text-popover-foreground sticky top-0 h-screen">
                     <SidebarContent />
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto">
+                <main className="flex-1 overflow-y-auto bg-background">
                     <div className="container max-w-6xl mx-auto p-4 lg:p-8">
                         {children}
                     </div>
@@ -115,3 +115,4 @@ export default function DashboardLayout({
         </div>
     )
 }
+

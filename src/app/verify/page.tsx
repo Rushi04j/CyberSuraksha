@@ -8,10 +8,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useLanguage } from "@/context/language-context"
 
 type VerifyResult = 'safe' | 'suspicious' | 'reported' | null;
 
 export default function VerifyToolPage() {
+    const { t } = useLanguage()
     const [inputType, setInputType] = useState('phone') // phone, upi, url
     const [inputValue, setInputValue] = useState('')
     const [isVerifying, setIsVerifying] = useState(false)
@@ -49,7 +51,7 @@ export default function VerifyToolPage() {
         <div className="container mx-auto px-4 py-8 max-w-2xl">
             <div className="text-center mb-10">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-2">
-                    Verify Before You Pay
+                    {t.nav.verify}
                 </h1>
                 <p className="text-muted-foreground">
                     Check Phone Numbers, UPI IDs, or Links against our national cybercrime database.
@@ -81,7 +83,6 @@ export default function VerifyToolPage() {
                             <span className="text-xs font-semibold">Website</span>
                         </button>
                     </div>
-                    {/* <CardTitle className="text-center">Enter Details</CardTitle> */}
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="flex gap-2">
@@ -96,7 +97,7 @@ export default function VerifyToolPage() {
                             onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
                         />
                         <Button size="lg" className="h-12 px-8" onClick={handleVerify} disabled={!inputValue || isVerifying}>
-                            {isVerifying ? "Checking..." : "Verify"}
+                            {isVerifying ? t.common.loading : t.common.verify}
                         </Button>
                     </div>
 
@@ -104,8 +105,8 @@ export default function VerifyToolPage() {
                     {result && (
                         <div className="animate-in fade-in zoom-in duration-300">
                             <Alert className={`border-l-4 ${result.status === 'reported' ? 'border-l-red-600 bg-red-50 dark:bg-red-900/20' :
-                                    result.status === 'suspicious' ? 'border-l-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
-                                        'border-l-green-600 bg-green-50 dark:bg-green-900/20'
+                                result.status === 'suspicious' ? 'border-l-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
+                                    'border-l-green-600 bg-green-50 dark:bg-green-900/20'
                                 }`}>
                                 <div className="flex items-start gap-4">
                                     {result.status === 'reported' ? <AlertTriangle className="h-6 w-6 text-red-600" /> :
@@ -114,8 +115,8 @@ export default function VerifyToolPage() {
                                     }
                                     <div>
                                         <AlertTitle className={`text-lg font-bold mb-1 ${result.status === 'reported' ? 'text-red-700' :
-                                                result.status === 'suspicious' ? 'text-yellow-700' :
-                                                    'text-green-700'
+                                            result.status === 'suspicious' ? 'text-yellow-700' :
+                                                'text-green-700'
                                             }`}>
                                             {result.status === 'reported' ? "HIGH RISK DETECTED" :
                                                 result.status === 'suspicious' ? "POTENTIAL RISK" :
@@ -131,7 +132,7 @@ export default function VerifyToolPage() {
 
                             {result.status === 'reported' && (
                                 <Button className="w-full mt-4 bg-red-600 hover:bg-red-700" onClick={() => window.location.href = '/dashboard/file-complaint'}>
-                                    Report this {inputType === 'phone' ? 'Number' : inputType === 'upi' ? 'ID' : 'Link'}
+                                    {t.nav.fileComplaint}
                                 </Button>
                             )}
                         </div>

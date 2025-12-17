@@ -348,7 +348,7 @@ const languageOptions = [
 ];
 
 export default function HomePage() {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t: globalT } = useLanguage();
   const { isSeniorMode } = useSeniorMode();
 
   // Use local translations for landing page specific content
@@ -362,8 +362,8 @@ export default function HomePage() {
 
         <main className="container mx-auto px-4 py-8 space-y-8">
           <div className="text-center space-y-4 mb-8">
-            <h1 className="text-4xl font-black">SIMPLE MODE ACTIVATED</h1>
-            <p className="text-xl">Easier interface for seniors and easy accessibility.</p>
+            <h1 className="text-4xl font-black">{globalT?.seniorMode?.title || "SIMPLE MODE ACTIVATED"}</h1>
+            <p className="text-xl">{globalT?.seniorMode?.subtitle || "Easier interface"}</p>
           </div>
 
           <div className="grid gap-6 max-w-lg mx-auto">
@@ -373,7 +373,7 @@ export default function HomePage() {
               onClick={() => window.location.href = '/emergency-report'}
             >
               <Siren className="h-10 w-10" />
-              REPORT EMERGENCY
+              {globalT?.seniorMode?.emergency || "REPORT EMERGENCY"}
             </Button>
 
             <Button
@@ -382,7 +382,7 @@ export default function HomePage() {
               onClick={() => window.location.href = '/tools/scam-detector'}
             >
               <Shield className="h-10 w-10" />
-              CHECK FOR SCAM
+              {globalT?.seniorMode?.scamCheck || "CHECK FOR SCAM"}
             </Button>
 
             <Button
@@ -391,14 +391,14 @@ export default function HomePage() {
               onClick={() => window.location.href = '/verify'}
             >
               <Phone className="h-10 w-10" />
-              VERIFY NUMBER
+              {globalT?.seniorMode?.verify || "VERIFY NUMBER"}
             </Button>
           </div>
 
           <div className="text-center mt-12 bg-gray-100 p-8 rounded-xl border-2 border-black">
-            <h2 className="text-2xl font-bold mb-4">NEED HELP?</h2>
+            <h2 className="text-2xl font-bold mb-4">{globalT?.seniorMode?.needHelp || "NEED HELP?"}</h2>
             <div className="text-3xl font-black">CALL 1930</div>
-            <p>National Cyber Helpline</p>
+            <p>{globalT?.seniorMode?.helplineDesc || "National Cyber Helpline"}</p>
           </div>
         </main>
       </div>
@@ -406,14 +406,17 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Animated Background Grid */}
+      <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(to_bottom,transparent,black)] pointer-events-none" />
+
       <Header />
       {/* ... keeping original content */}
-      <div className="flex justify-end px-6 pt-4">
+      <div className="flex justify-end px-6 pt-4 relative z-10">
         <select
           value={language}
           onChange={e => setLanguage(e.target.value as Language)}
-          className="border px-2 py-1 rounded bg-white dark:bg-slate-800 text-sm ring-1 ring-slate-200 dark:ring-slate-700"
+          className="border px-2 py-1 rounded bg-card text-card-foreground text-sm ring-1 ring-border"
         >
           {languageOptions.map(l => (
             <option value={l.code} key={l.code}>{l.label}</option>
@@ -421,9 +424,9 @@ export default function HomePage() {
         </select>
       </div>
       {/* Hero Section */}
-      <section className="relative py-24 px-4 sm:px-8 lg:px-10">
+      <section className="relative py-24 px-4 sm:px-8 lg:px-10 z-10">
         <div className="container mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl glassy shadow-2xl rounded-3xl p-10 text-center space-y-8 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg">
+          <div className="mx-auto max-w-3xl glassy rounded-3xl p-10 text-center space-y-8">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight text-foreground drop-shadow-md">
               {t.secureReporting}
               <span className="block bg-gradient-to-r from-blue-700 to-blue-400 bg-clip-text text-transparent animate-gradient-x">
@@ -445,8 +448,9 @@ export default function HomePage() {
         </div>
       </section>
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-8 lg:px-10 bg-gradient-to-r from-blue-50/30 to-blue-100/10 dark:from-gray-900/40 dark:to-gray-950/10">
-        <div className="container mx-auto max-w-6xl">
+      <section className="py-20 px-4 sm:px-8 lg:px-10 bg-muted/5 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-background to-transparent h-20" />
+        <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-foreground mb-3">{t.featuresTitle}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -519,15 +523,15 @@ export default function HomePage() {
             <p className="text-lg text-muted-foreground">{t.quickSubtitle}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="p-7 glassy shadow-xl hover:scale-[1.02] border-red-500/20 bg-red-50/50 dark:bg-red-950/10">
+            <Card className="p-7 glassy shadow-xl hover:scale-[1.02] border-destructive/20 bg-destructive/10">
               <CardContent className="space-y-4">
-                <Siren className="h-16 w-16 text-red-600 mx-auto drop-shadow animate-pulse" />
+                <Siren className="h-16 w-16 text-destructive mx-auto drop-shadow animate-pulse" />
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-1 text-red-700 dark:text-red-400">Emergency / Anonymous</h3>
+                  <h3 className="text-2xl font-bold mb-1 text-destructive">Emergency / Anonymous</h3>
                   <p className="text-muted-foreground mb-3">
                     Report urgent incidents anonymously without logging in.
                   </p>
-                  <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/30">
+                  <Button asChild className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground shadow-lg shadow-destructive/20">
                     <Link href="/emergency-report">{t.startEmergency}</Link>
                   </Button>
                 </div>
@@ -551,15 +555,15 @@ export default function HomePage() {
         </div>
       </section>
       {/* Emergency Contact */}
-      <section className="py-16 px-4 sm:px-8 lg:px-10 bg-emergency/10">
+      <section className="py-16 px-4 sm:px-8 lg:px-10 bg-destructive/5">
         <div className="container mx-auto max-w-4xl text-center">
           <div className="space-y-6">
-            <Phone className="h-16 w-16 text-emergency mx-auto drop-shadow" />
+            <Phone className="h-16 w-16 text-destructive mx-auto drop-shadow" />
             <h2 className="text-3xl font-bold text-foreground">{t.emergencyTitle}</h2>
             <p className="text-lg text-muted-foreground">{t.emergencySubtitle}</p>
             <Button
               size="lg"
-              className="text-xl px-14 py-7 bg-emergency hover:bg-emergency/90 text-emergency-foreground animate-pulse"
+              className="text-xl px-14 py-7 bg-destructive hover:bg-destructive/90 text-destructive-foreground animate-pulse"
               onClick={() => (window.location.href = "tel:100")}
             >
               {t.callNow}
@@ -568,7 +572,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-8 lg:px-10 border-t bg-white/60 dark:bg-gray-900/40 shadow-inner">
+      <footer className="py-12 px-4 sm:px-8 lg:px-10 border-t border-border bg-card/40 backdrop-blur-sm shadow-inner">
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
@@ -629,7 +633,7 @@ export default function HomePage() {
               </ul>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
+          <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
             <p>{t.copyright}</p>
           </div>
         </div>

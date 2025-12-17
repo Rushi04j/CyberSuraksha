@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Upload, AlertTriangle, CheckCircle, Info, ScanLine, Smartphone } from "lucide-react"
+import { useLanguage } from "@/context/language-context"
 
 export default function ScamDetectorPage() {
+    const { t } = useLanguage()
     const [analyzing, setAnalyzing] = useState(false)
     const [progress, setProgress] = useState(0)
     const [result, setResult] = useState<{ status: 'danger' | 'warning' | 'safe', confidence: number, triggers: string[] } | null>(null)
@@ -59,7 +61,7 @@ export default function ScamDetectorPage() {
         <div className="container mx-auto px-4 py-8 max-w-2xl">
             <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-2">
-                    WhatsApp Scam-o-Meter
+                    {t.nav.scamDetector}
                 </h1>
                 <p className="text-muted-foreground">
                     Upload a screenshot of a suspicious chat or SMS. Our AI will analyze it for fraud patterns.
@@ -108,7 +110,7 @@ export default function ScamDetectorPage() {
                                 </div>
                             ) : (
                                 <Button onClick={analyzeImage} className="w-full h-12 text-lg bg-teal-600 hover:bg-teal-700">
-                                    <ScanLine className="mr-2 h-5 w-5" /> Analyze for Scams
+                                    <ScanLine className="mr-2 h-5 w-5" /> {t.dashboard.analyze}
                                 </Button>
                             )}
                         </div>
@@ -139,7 +141,7 @@ export default function ScamDetectorPage() {
 
                             {result.status === 'danger' && (
                                 <Button variant="destructive" className="w-full mt-4" onClick={() => window.location.href = '/file-complaint'}>
-                                    Report this immediately
+                                    {t.nav.fileComplaint}
                                 </Button>
                             )}
                         </div>

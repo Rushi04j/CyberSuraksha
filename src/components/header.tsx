@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, Shield, Phone } from "lucide-react"
 import { LanguageToggle } from "@/components/language-toggle"
+import { useLanguage } from "@/context/language-context"
 
 import { useSeniorMode } from "@/context/senior-mode-context"
 import { Accessibility } from "lucide-react"
@@ -15,16 +16,17 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const { isSeniorMode, toggleSeniorMode } = useSeniorMode()
+  const { t } = useLanguage()
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Verify Tool", href: "/verify" },
-    { name: "Scam Detector", href: "/tools/scam-detector" },
-    { name: "Heatmap", href: "/tools/heatmap" },
-    { name: "Legal Aid", href: "/legal-aid" },
-    { name: "SMS Report", href: "/tools/sms-report" },
-    { name: "Cyber Quiz", href: "/quiz" },
-    { name: "Awareness Hub", href: "/safety" },
+    { name: t.nav.home, href: "/" },
+    { name: t.nav.verify, href: "/verify" },
+    { name: t.nav.scamDetector, href: "/tools/scam-detector" },
+    { name: t.nav.heatmap, href: "/tools/heatmap" },
+    { name: t.nav.legalAid, href: "/legal-aid" },
+    { name: t.nav.smsReport, href: "/tools/sms-report" },
+    { name: t.nav.quiz, href: "/quiz" },
+    { name: t.nav.safety, href: "/safety" },
   ]
 
   return (

@@ -9,7 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react"
 import { Smartphone, Send, Signal } from "lucide-react"
 
+import { useLanguage } from "@/context/language-context"
+
 export default function SMSReportPage() {
+    const { t } = useLanguage()
     const [data, setData] = useState({
         bank: "",
         amount: "",
@@ -30,9 +33,9 @@ export default function SMSReportPage() {
     return (
         <div className="container mx-auto px-4 py-8 max-w-2xl">
             <div className="text-center mb-10">
-                <h1 className="text-3xl font-bold mb-2">High-Speed Offline Reporter</h1>
+                <h1 className="text-3xl font-bold mb-2">{t.tools.smsTitle}</h1>
                 <p className="text-muted-foreground">
-                    No Internet? No Problem. Generate a code to report directly via SMS to 1930.
+                    {t.tools.smsDesc}
                 </p>
             </div>
 
@@ -40,22 +43,22 @@ export default function SMSReportPage() {
                 <CardHeader>
                     <div className="flex items-center gap-2 text-slate-700">
                         <Signal className="h-6 w-6" />
-                        <CardTitle>SMS Code Generator</CardTitle>
+                        <CardTitle>{t.tools.smsTitle}</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div>
-                        <Label>Bank Name / Wallet</Label>
+                        <Label>{t.tools.bankLabel}</Label>
                         <Input placeholder="e.g. SBI, HDFC, PAYTM" value={data.bank} onChange={e => setData({ ...data, bank: e.target.value })} />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label>Amount Lost (₹)</Label>
+                            <Label>{t.tools.amountLabel}</Label>
                             <Input type="number" placeholder="5000" value={data.amount} onChange={e => setData({ ...data, amount: e.target.value })} />
                         </div>
                         <div>
-                            <Label>Fraud Type</Label>
+                            <Label>{t.tools.fraudType}</Label>
                             <Select value={data.fraudType} onValueChange={v => setData({ ...data, fraudType: v })}>
                                 <SelectTrigger>
                                     <SelectValue />
@@ -79,7 +82,7 @@ export default function SMSReportPage() {
                     </div>
 
                     <Button size="lg" className="w-full h-14 text-lg" onClick={handleCopy}>
-                        <Smartphone className="mr-2 h-5 w-5" /> Copy Code & Open SMS
+                        <Smartphone className="mr-2 h-5 w-5" /> {t.tools.generate}
                     </Button>
                 </CardContent>
             </Card>

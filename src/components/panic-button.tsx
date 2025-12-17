@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Lock, Smartphone, Timer, ShieldAlert, AlertOctagon } from "lucide-react"
 import { useState } from "react"
 
+import { useLanguage } from "@/context/language-context"
+
 export default function PanicButton() {
+    const { t } = useLanguage()
     const [locked, setLocked] = useState(false)
 
     const handlePanic = () => {
@@ -19,23 +22,22 @@ export default function PanicButton() {
             <CardHeader className="pb-2">
                 <CardTitle className="text-red-700 flex items-center gap-2">
                     {locked ? <Lock className="h-6 w-6 text-green-700" /> : <ShieldAlert className="h-6 w-6" />}
-                    {locked ? "ACCOUNTS SECURED" : "ONE-TAP LOCK"}
+                    {locked ? t.panicButton.activeTitle : t.panicButton.title}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 {locked ? (
                     <div className="text-green-800">
-                        <p className="font-bold">Simulation: Requests sent to HDFC, SBI, and Axis Bank.</p>
-                        <p className="text-sm mt-1">Your accounts are temporarily frozen. Contact banks to unfreeze.</p>
-                        <Button variant="outline" size="sm" className="mt-4" onClick={() => setLocked(false)}>Reset Simulation</Button>
+                        <p className="font-bold">{t.panicButton.activeDesc}</p>
+                        <Button variant="outline" size="sm" className="mt-4" onClick={() => setLocked(false)}>{t.panicButton.reset}</Button>
                     </div>
                 ) : (
                     <div className="space-y-4">
                         <p className="text-sm text-red-800">
-                            Suspect a hack? Instantly freeze your linked bank accounts and UPI IDs.
+                            {t.panicButton.desc}
                         </p>
                         <Button variant="destructive" className="w-full text-lg font-bold animate-pulse" onClick={handlePanic}>
-                            <Lock className="mr-2 h-5 w-5" /> FREEZE ALL NOW
+                            <Lock className="mr-2 h-5 w-5" /> {t.panicButton.button}
                         </Button>
                     </div>
                 )}

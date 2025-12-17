@@ -1,75 +1,71 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
 }
 
 :root {
-  /* PREMIUM LIGHT MODE */
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  /* BASE THEME: CYBER DARK + BLUE AUTHORITY */
+  /* Backgrounds */
+  --background: 224 40% 7%;      /* #0B0F1A */
+  --foreground: 220 13% 91%;     /* #E5E7EB */
 
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card: 220 35% 13%;           /* #161E2E */
+  --card-foreground: 220 13% 91%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
+  --popover: 223 40% 6%;         /* #0A0E17 Sidebar Bg */
+  --popover-foreground: 220 13% 91%;
 
-  --primary: 221.2 83.2% 53.3%;
-  /* Vibrant Royal Blue */
-  --primary-foreground: 210 40% 98%;
+  /* Primary Accent: Trust Blue */
+  --primary: 221 83% 53%;        /* #2563EB */
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
+  /* Secondary: Dark Blue-Gray */
+  --secondary: 221 39% 11%;      /* #111827 */
+  --secondary-foreground: 220 13% 91%;
 
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  /* Muted */
+  --muted: 221 39% 11%;
+  --muted-foreground: 218 11% 65%; /* #9CA3AF */
 
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  /* Accent: Cyan / AI Feel */
+  --accent: 189 84% 53%;         /* #22D3EE */
+  --accent-foreground: 224 40% 7%;
 
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
+  /* Destructive */
+  --destructive: 0 84% 60%;      /* #EF4444 */
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
+  /* Borders & Inputs */
+  --border: 215 28% 17%;         /* #1F2937 (calculated approx) */
+  --input: 215 28% 17%;
+  --ring: 189 84% 53%;           /* Cyan Ring */
 
-  --radius: 0.75rem;
+  --radius: 0.75rem;             /* 12px Rounded for Citizen Friendly */
+}
+
+/* Police Theme Overrides */
+.police-theme {
+  /* Authority Blue */
+  --primary: 226 71% 40%;        /* #1E40AF */
+  --primary-foreground: 0 0% 100%;
+  
+  /* Info Blue */
+  --accent: 199 89% 48%;         /* #0EA5E9 */
+  --accent-foreground: 0 0% 100%;
+
+  /* Deep Red Critical */
+  --destructive: 0 72% 51%;      /* #DC2626 */
+  
+  /* Squarer UI */
+  --radius: 0.25rem;             /* 4px */
+  
+  /* Slightly stricter borders */
+  --border: 215 28% 25%;
 }
 
 .dark {
-  /* PREMIUM DARK MODE - Deep Cyber Midnight */
-  --background: 222.2 84% 4.9%;
-  /* Rich Dark Blue/Black */
-  --foreground: 210 40% 98%;
-
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-
-  --primary: 217.2 91.2% 59.8%;
-  /* Electric Neon Blue */
-  --primary-foreground: 222.2 47.4% 11.2%;
-
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+  /* Inherit :root because :root IS the dark mode now */
 }
 
 body {
@@ -79,24 +75,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism Utilities with HSL opacity */
+/* Glassmorphism Utilities */
 .glassy {
-  @apply bg-white/70 dark:bg-slate-950/60 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-lg;
+  @apply bg-[#161E2E]/80 backdrop-blur-md border border-white/10 shadow-lg;
 }
 
 /* Animations */
 @keyframes gradient-x {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .animate-gradient-x {
@@ -104,19 +92,23 @@ body {
   animation: gradient-x 8s ease infinite;
 }
 
+/* Animated Grid Pattern */
+.bg-grid-white {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
 /* Scrollbar Polish */
 ::-webkit-scrollbar {
   width: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+  @apply bg-slate-700 rounded-full;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
+  @apply bg-slate-600;
 }

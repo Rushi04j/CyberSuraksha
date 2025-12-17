@@ -9,7 +9,10 @@ import { Badge } from "@/components/ui/badge"
 import { Scale, Phone, Globe, User, MapPin } from "lucide-react"
 import { useState } from "react"
 
+import { useLanguage } from "@/context/language-context"
+
 export default function LegalAidPage() {
+    const { t } = useLanguage()
     const [category, setCategory] = useState("")
 
     const getLawyers = () => {
@@ -32,20 +35,20 @@ export default function LegalAidPage() {
         <div className="container mx-auto px-4 py-8">
             <div className="text-center mb-10">
                 <h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
-                    <Scale className="text-primary h-8 w-8" /> Instant Legal Aid Matcher
+                    <Scale className="text-primary h-8 w-8" /> {t.tools.legalTitle}
                 </h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Don't just report it, fight it. Find verified lawyers and NGOs specializing in your specific type of cyber crime.
+                    {t.tools.legalDesc}
                 </p>
             </div>
 
             <div className="max-w-xl mx-auto mb-12">
                 <Card>
                     <CardContent className="pt-6">
-                        <Label className="mb-2 block">What type of incident did you face?</Label>
+                        <Label className="mb-2 block">{t.tools.incidentType}</Label>
                         <Select onValueChange={setCategory}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Crime Category" />
+                                <SelectValue placeholder={t.tools.findLawyer} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="financial">Financial Fraud / Bank Scam</SelectItem>
@@ -74,7 +77,7 @@ export default function LegalAidPage() {
                                         <CardDescription>{l.spec}</CardDescription>
                                     </div>
                                 </div>
-                                {l.verified && <Badge variant="secondary" className="bg-blue-100 text-blue-700">Verified</Badge>}
+                                {l.verified && <Badge variant="secondary" className="bg-blue-100 text-blue-700">{t.common.verify}d</Badge>}
                             </CardHeader>
                             <CardContent>
                                 <div className="flex justify-between text-sm mb-4">
