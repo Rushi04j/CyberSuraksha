@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { FileText, Clock, CheckCircle, AlertTriangle, ArrowRight, Plus, Shield } from "lucide-react"
 import Link from "next/link"
+import PanicButton from "@/components/panic-button"
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -248,61 +249,68 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Quick Tips or Actions */}
-        <Card className="glassy">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              {t.dashboard.aiTool}
-            </CardTitle>
-            <CardDescription>{t.dashboard.aiDesc}</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="bg-primary/5 p-4 rounded-lg space-y-3 dark:bg-primary/10">
-              <textarea
-                className="w-full text-xs p-2 rounded border bg-background text-foreground min-h-[80px]"
-                placeholder="Paste suspicious text here (e.g. 'You won a lottery, send bank details')..."
-                value={aiText}
-                onChange={(e) => setAiText(e.target.value)}
-              />
+        {/* RIGHT COLUMN - TOOLS */}
+        <div className="space-y-6">
 
-              {aiResult && (
-                <div className="space-y-3">
-                  <div className={`text-xs p-2 rounded font-bold text-center ${aiResult.risk === 'High Risk' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
-                    {aiResult.risk} detected (Confidence: {aiResult.score})
+          {/* Panic Button */}
+          <PanicButton />
+
+          {/* Quick Tips or Actions */}
+          <Card className="glassy">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-primary" />
+                {t.dashboard.aiTool}
+              </CardTitle>
+              <CardDescription>{t.dashboard.aiDesc}</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="bg-primary/5 p-4 rounded-lg space-y-3 dark:bg-primary/10">
+                <textarea
+                  className="w-full text-xs p-2 rounded border bg-background text-foreground min-h-[80px]"
+                  placeholder="Paste suspicious text here (e.g. 'You won a lottery, send bank details')..."
+                  value={aiText}
+                  onChange={(e) => setAiText(e.target.value)}
+                />
+
+                {aiResult && (
+                  <div className="space-y-3">
+                    <div className={`text-xs p-2 rounded font-bold text-center ${aiResult.risk === 'High Risk' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                      {aiResult.risk} detected (Confidence: {aiResult.score})
+                    </div>
+
+                    <div className="bg-background/50 p-2 rounded border">
+                      <p className="text-xs font-semibold mb-1">AI Suggestions:</p>
+                      <ul className="text-xs space-y-1 text-muted-foreground list-disc pl-4">
+                        {aiResult.suggestions.map((s, i) => (
+                          <li key={i}>{s}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
+                )}
 
-                  <div className="bg-background/50 p-2 rounded border">
-                    <p className="text-xs font-semibold mb-1">AI Suggestions:</p>
-                    <ul className="text-xs space-y-1 text-muted-foreground list-disc pl-4">
-                      {aiResult.suggestions.map((s, i) => (
-                        <li key={i}>{s}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              <Button
-                size="sm"
-                variant="secondary"
-                className="w-full text-xs"
-                onClick={handleAnalyze}
-                disabled={analyzing}
-              >
-                {analyzing ? t.common.loading : t.dashboard.analyze}
-              </Button>
-            </div>
-
-            <div className="border rounded-lg p-4 space-y-2 bg-background/50">
-              <div className="font-semibold text-sm">{t.dashboard.emergency}</div>
-              <div className="text-xs space-y-1 text-muted-foreground">
-                <p>Police: <span className="text-destructive font-bold">100</span></p>
-                <p>Cyber Helpline: <span className="text-primary font-bold">1930</span></p>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="w-full text-xs"
+                  onClick={handleAnalyze}
+                  disabled={analyzing}
+                >
+                  {analyzing ? t.common.loading : t.dashboard.analyze}
+                </Button>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+
+              <div className="border rounded-lg p-4 space-y-2 bg-background/50">
+                <div className="font-semibold text-sm">{t.dashboard.emergency}</div>
+                <div className="text-xs space-y-1 text-muted-foreground">
+                  <p>Police: <span className="text-destructive font-bold">100</span></p>
+                  <p>Cyber Helpline: <span className="text-primary font-bold">1930</span></p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )

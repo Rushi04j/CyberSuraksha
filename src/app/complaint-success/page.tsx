@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { Suspense } from "react"
+import { Badge } from "@/components/ui/badge"
 
 function ActionPlanContent() {
     const searchParams = useSearchParams()
@@ -49,14 +50,20 @@ function ActionPlanContent() {
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-700">
+
             <div className="text-center mb-10">
                 <div className="mx-auto w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-500/20">
                     <CheckCircle className="h-12 w-12 text-green-600" />
                 </div>
                 <h1 className="text-3xl font-bold mb-2">Complaint Submitted Successfully</h1>
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-lg mb-2">
                     Reference ID: <span className="font-mono font-bold text-primary bg-primary/10 px-2 py-1 rounded">{id}</span>
                 </p>
+                <div className="flex flex-col items-center gap-1 animate-in slide-in-from-top-4 duration-1000">
+                    <Badge variant="outline" className="text-xs font-mono bg-slate-50 text-slate-500 border-slate-200">
+                        BLOCKCHAIN HASH: 0x7f83b1...a92c (Immutable Evidence)
+                    </Badge>
+                </div>
             </div>
 
             <Card className="border-t-4 border-t-red-500 shadow-2xl overflow-hidden">

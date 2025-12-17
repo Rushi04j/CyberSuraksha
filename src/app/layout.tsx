@@ -6,6 +6,7 @@ import "./globals.css"
 import { AuthProvider } from "@/context/auth-context"
 import { LanguageProvider } from "@/context/language-context"
 import { ThemeProvider } from "@/context/theme-context"
+import { SeniorModeProvider } from "@/context/senior-mode-context"
 
 export const metadata: Metadata = {
   title: "CyberSuraksha - Secure Crime Reporting Platform",
@@ -24,7 +25,9 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>
-              {children}
+              <SeniorModeProvider>
+                {children}
+              </SeniorModeProvider>
             </AuthProvider>
           </LanguageProvider>
         </ThemeProvider>

@@ -8,6 +8,7 @@ import { Shield, Lock, FileText, BarChart, Users, ArrowRight, ShieldAlert, Cpu, 
 import Link from "next/link"
 import { Language } from "@/lib/translations"
 import { useLanguage } from "@/context/language-context"
+import { useSeniorMode } from "@/context/senior-mode-context"
 
 // Dictionary for supported languages
 const translations = {
@@ -348,14 +349,66 @@ const languageOptions = [
 
 export default function HomePage() {
   const { language, setLanguage } = useLanguage();
+  const { isSeniorMode } = useSeniorMode();
 
   // Use local translations for landing page specific content
   // Fallback to English if the current global language doesn't have a translation key here
   const t = translations[language as keyof typeof translations] || translations.en;
 
+  if (isSeniorMode) {
+    return (
+      <div className="min-h-screen bg-white text-black">
+        <Header />
+
+        <main className="container mx-auto px-4 py-8 space-y-8">
+          <div className="text-center space-y-4 mb-8">
+            <h1 className="text-4xl font-black">SIMPLE MODE ACTIVATED</h1>
+            <p className="text-xl">Easier interface for seniors and easy accessibility.</p>
+          </div>
+
+          <div className="grid gap-6 max-w-lg mx-auto">
+            <Button
+              variant="default"
+              className="h-24 text-2xl bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-xl flex items-center justify-center gap-4 border-4 border-black"
+              onClick={() => window.location.href = '/emergency-report'}
+            >
+              <Siren className="h-10 w-10" />
+              REPORT EMERGENCY
+            </Button>
+
+            <Button
+              variant="outline"
+              className="h-24 text-2xl bg-blue-100 hover:bg-blue-200 text-black font-bold rounded-xl border-4 border-black flex items-center justify-center gap-4"
+              onClick={() => window.location.href = '/tools/scam-detector'}
+            >
+              <Shield className="h-10 w-10" />
+              CHECK FOR SCAM
+            </Button>
+
+            <Button
+              variant="outline"
+              className="h-24 text-2xl bg-green-100 hover:bg-green-200 text-black font-bold rounded-xl border-4 border-black flex items-center justify-center gap-4"
+              onClick={() => window.location.href = '/verify'}
+            >
+              <Phone className="h-10 w-10" />
+              VERIFY NUMBER
+            </Button>
+          </div>
+
+          <div className="text-center mt-12 bg-gray-100 p-8 rounded-xl border-2 border-black">
+            <h2 className="text-2xl font-bold mb-4">NEED HELP?</h2>
+            <div className="text-3xl font-black">CALL 1930</div>
+            <p>National Cyber Helpline</p>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <Header />
+      {/* ... keeping original content */}
       <div className="flex justify-end px-6 pt-4">
         <select
           value={language}
