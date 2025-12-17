@@ -20,6 +20,9 @@ export function Header() {
     { name: "Home", href: "/" },
     { name: "Verify Tool", href: "/verify" },
     { name: "Scam Detector", href: "/tools/scam-detector" },
+    { name: "Heatmap", href: "/tools/heatmap" },
+    { name: "Legal Aid", href: "/legal-aid" },
+    { name: "SMS Report", href: "/tools/sms-report" },
     { name: "Cyber Quiz", href: "/quiz" },
     { name: "Awareness Hub", href: "/safety" },
   ]
