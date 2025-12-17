@@ -1,7 +1,7 @@
-import { legalKnowledgeBase, LegalStatute, findLegalProvision } from "./legal-knowledge-base"
+import { LegalStatute, findLegalProvision } from "./legal-knowledge-base"
 
 // Intent Types
-type Intent = 'REPORT_FRAUD' | 'LEGAL_INFO' | 'PROCEDURE' | 'EVIDENCE' | 'DRAFTING' | 'RIGHTS' | 'UNKNOWN'
+export type Intent = 'REPORT_FRAUD' | 'LEGAL_INFO' | 'PROCEDURE' | 'EVIDENCE' | 'DRAFTING' | 'RIGHTS' | 'UNKNOWN'
 
 // Structured Response Interface
 export interface AIResponse {
@@ -17,15 +17,17 @@ export interface AIResponse {
     source: 'Official Govt Sources via VLKB' | 'General Guidance'
 }
 
-const MANDATORY_DISCLAIMER = "\n\n(⚖️ This guidance is based on official Government of India cybercrime procedures and advisories. It does not replace personalized legal advice.)"
+// ✅ Legacy exports to prevent errors in other files
+export const knowledgeBase = [];
+export const defaultAnswer = "Please contact 1930.";
 
 // Helper to determine risk based on time (simple keyword check)
 function assessRisk(input: string): AIResponse['riskLevel'] {
     const lower = input.toLowerCase()
-    if (lower.includes('just now') || lower.includes('1 hour') || lower.includes('2 hour') || lower.includes('minutes')) {
+    if (lower.includes('just now') || lower.includes('1 hour') || lower.includes('2 hour') || lower.includes('minutes') || lower.includes('moment ago')) {
         return 'Golden Hour (High Chance)'
     }
-    if (lower.includes('yesterday') || lower.includes('2 days') || lower.includes('week') || lower.includes('month')) {
+    if (lower.includes('yesterday') || lower.includes('2 days') || lower.includes('week') || lower.includes('month') || lower.includes('days ago')) {
         return 'Delayed (Lower Chance)'
     }
     return 'Unknown'
@@ -35,13 +37,17 @@ export const getAIResponse = (input: string): AIResponse => {
     const lowerInput = input.toLowerCase()
 
     // 1. Identify Crime Type using VLKB keywords
-    let matchedStatute: LegalStatute | undefined
-    if (lowerInput.includes('money') || lowerInput.includes('fraud') || lowerInput.includes('upi') || lowerInput.includes('bank')) {
-        matchedStatute = findLegalProvision('financial')
-    } else if (lowerInput.includes('photo') || lowerInput.includes('video') || lowerInput.includes('harass') || lowerInput.includes('blackmail')) {
-        matchedStatute = findLegalProvision('sextortion') // or harassment
-    } else if (lowerInput.includes('identity') || lowerInput.includes('fake profile') || lowerInput.includes('impersonat')) {
-        matchedStatute = findLegalProvision('identity')
+    // We use specific "trigger words" that we know exist in the VLKB keywords array to ensure a match
+    let matchedStatute: LegalStatute | null = null;
+
+    if (lowerInput.includes('money') || lowerInput.includes('fraud') || lowerInput.includes('upi') || lowerInput.includes('bank') || lowerInput.includes('paytm')) {
+        matchedStatute = findLegalProvision('money') // 'money' is a keyword in VLKB
+    } else if (lowerInput.includes('photo') || lowerInput.includes('video') || lowerInput.includes('harass') || lowerInput.includes('blackmail') || lowerInput.includes('nude')) {
+        matchedStatute = findLegalProvision('blackmail') // 'blackmail' is a keyword
+    } else if (lowerInput.includes('identity') || lowerInput.includes('fake profile') || lowerInput.includes('impersonat') || lowerInput.includes('pretending')) {
+        matchedStatute = findLegalProvision('fake account') // 'fake account' is a keyword
+    } else if (lowerInput.includes('police') && (lowerInput.includes('call') || lowerInput.includes('video') || lowerInput.includes('arrest'))) {
+        matchedStatute = findLegalProvision('arrest') // 'arrest' is a keyword
     }
 
     // 2. Draft Assistance Intent
@@ -56,8 +62,8 @@ export const getAIResponse = (input: string): AIResponse => {
         }
     }
 
-    // 3. Digital Arrest / Fake Police Intent
-    if (lowerInput.includes('police calling') || lowerInput.includes('arrest') || lowerInput.includes('video call') || lowerInput.includes('cbi')) {
+    // 3. Digital Arrest / Fake Police Intent (Specific Override for Safety)
+    if (lowerInput.includes('police calling') || lowerInput.includes('arrest') || lowerInput.includes('video call') || lowerInput.includes('cbi') || lowerInput.includes('customs')) {
         return {
             text: "STOP! Indian Police, CBI, or Customs NEVER make video calls to investigate or ask for money. This is a 'Digital Arrest' scam.",
             steps: [
@@ -74,7 +80,7 @@ export const getAIResponse = (input: string): AIResponse => {
         }
     }
 
-    // 4. Incident Reporting Flow (Financial)
+    // 4. Incident Reporting Flow (Financial/General)
     if (matchedStatute) {
         const risk = assessRisk(input)
         const refundChanceText = risk === 'Golden Hour (High Chance)'
@@ -84,7 +90,7 @@ export const getAIResponse = (input: string): AIResponse => {
                 : "Timely reporting is key."
 
         return {
-            text: `I understand you are facing a case of ${matchedStatute.crimeType}. ${refundChanceText}\n\nAccording to ${matchedStatute.source}, this is a punishable offense.`,
+            text: `I understand you are facing a case of ${matchedStatute.crimeType}. ${refundChanceText}\n\nAccording to ${matchedStatute.sourceUrl ? 'official sources' : 'law'}, this is a punishable offense.`,
             legalInfo: matchedStatute,
             steps: [
                 "Call 1930 immediately (National Cyber Crime Helpline).",
@@ -93,7 +99,7 @@ export const getAIResponse = (input: string): AIResponse => {
             ],
             evidenceRequired: [
                 "Transaction ID / Reference Number (UTR)",
-                "Screenshots of chat/messages",
+                "Screenshots of chat/messages/profiles",
                 "Bank Statement highlighting the deduction",
                 "Suspect's phone number/UPI ID"
             ],
