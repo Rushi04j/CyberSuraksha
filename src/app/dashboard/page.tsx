@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
   // AI Tool State
   const [aiText, setAiText] = useState("")
-  const [aiResult, setAiResult] = useState<{ score: string, risk: string } | null>(null)
+  const [aiResult, setAiResult] = useState<{ score: string, risk: string, suggestions: string[] } | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
 
   // SOS State
@@ -61,10 +61,23 @@ export default function DashboardPage() {
     if (!aiText) return
     setAnalyzing(true)
     setTimeout(() => {
-      const isFraud = aiText.toLowerCase().includes("lottery") || aiText.toLowerCase().includes("bank") || aiText.toLowerCase().includes("otp")
+      const isFraud = aiText.toLowerCase().includes("lottery") || aiText.toLowerCase().includes("bank") || aiText.toLowerCase().includes("otp") || aiText.toLowerCase().includes("kyc")
+
+      const suggestions = isFraud ? [
+        "Do NOT share any OTP or PIN.",
+        "Block the sender immediately.",
+        "Contact your bank's official fraud helpline.",
+        "Report to CyberCrime (1930)."
+      ] : [
+        "Verify the sender's identity independently.",
+        "Do not click on suspicious links.",
+        "Monitor your account for unusual activity."
+      ]
+
       setAiResult({
-        score: isFraud ? "95/100" : "15/100",
-        risk: isFraud ? "High Risk" : "Safe"
+        score: isFraud ? "98.2%" : "12.4%",
+        risk: isFraud ? "High Risk" : "Safe",
+        suggestions
       })
       setAnalyzing(false)
     }, 1500)
@@ -203,6 +216,10 @@ export default function DashboardPage() {
                         <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
                         <span>•</span>
                         <span>{complaint.category}</span>
+                        {/* New Severity Indicator */}
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase ${complaint.urgency === 'High' || complaint.urgency === 'Emergency' ? 'bg-red-100 text-red-600' : complaint.urgency === 'Medium' ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600'}`}>
+                          {complaint.urgency}
+                        </span>
                       </div>
                     </div>
                     <div className={`px-2.5 py-0.5 rounded-full text-xs font-medium border
@@ -250,8 +267,19 @@ export default function DashboardPage() {
               />
 
               {aiResult && (
-                <div className={`text-xs p-2 rounded font-bold text-center ${aiResult.risk === 'High Risk' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
-                  {aiResult.risk} detected (Score: {aiResult.score})
+                <div className="space-y-3">
+                  <div className={`text-xs p-2 rounded font-bold text-center ${aiResult.risk === 'High Risk' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                    {aiResult.risk} detected (Confidence: {aiResult.score})
+                  </div>
+
+                  <div className="bg-background/50 p-2 rounded border">
+                    <p className="text-xs font-semibold mb-1">AI Suggestions:</p>
+                    <ul className="text-xs space-y-1 text-muted-foreground list-disc pl-4">
+                      {aiResult.suggestions.map((s, i) => (
+                        <li key={i}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               )}
 
@@ -279,4 +307,3 @@ export default function DashboardPage() {
     </div>
   )
 }
-

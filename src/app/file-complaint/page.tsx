@@ -449,12 +449,13 @@ export default function FileComplaintPage() {
                   </Button>
                 </div>
 
-                {/* Photo Upload */}
+                {/* Photo & Screenshot Upload */}
                 <div className="mb-6">
-                  <Label>Photos</Label>
+                  <Label>Screenshots & Evidence Photos</Label>
+                  <p className="text-xs text-muted-foreground mb-2">Upload fraud screenshots, WhatsApp chats, or physical evidence.</p>
                   <input type="file" multiple accept="image/*" onChange={handlePhotoUpload} className="hidden" id="photos-upload" />
                   <label htmlFor="photos-upload" className="cursor-pointer inline-flex items-center gap-2 rounded-md border border-primary bg-primary/20 px-4 py-2 text-primary hover:bg-primary/50">
-                    <Upload className="h-5 w-5" /> Upload Photos
+                    <Upload className="h-5 w-5" /> Upload Images
                   </label>
 
                   {photoPreviews.length > 0 && (
@@ -476,10 +477,11 @@ export default function FileComplaintPage() {
 
                 {/* Document Upload */}
                 <div className="mb-6">
-                  <Label>Documents</Label>
-                  <input type="file" multiple accept=".pdf,.doc,.docx" onChange={handleDocUpload} className="hidden" id="docs-upload" />
+                  <Label>Documents & Bank Statements</Label>
+                  <p className="text-xs text-muted-foreground mb-2">Upload FIR copies, bank statements, or official letters (PDF/DOC).</p>
+                  <input type="file" multiple accept=".pdf,.doc,.docx,.txt" onChange={handleDocUpload} className="hidden" id="docs-upload" />
                   <label htmlFor="docs-upload" className="cursor-pointer inline-flex items-center gap-2 rounded-md border border-primary bg-primary/20 px-4 py-2 text-primary hover:bg-primary/50">
-                    <Upload className="h-5 w-5" /> Upload Documents
+                    <Upload className="h-5 w-5" /> Upload Files
                   </label>
 
                   {docPreviews.length > 0 && (
