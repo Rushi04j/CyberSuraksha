@@ -145,12 +145,44 @@ export default function FileComplaintPage() {
   }
 
   const startRecording = () => {
-    setIsRecording(true)
-    // Integrate real recording here
-    setTimeout(() => {
-      setIsRecording(false)
-      // Simulate recording blob (left null here)
-    }, 3000)
+    // @ts-ignore
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Your browser does not support voice recognition. Please use Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US'; // Default to English, could be made dynamic
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    setIsRecording(true);
+    recognition.start();
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setFormData(prev => ({
+        ...prev,
+        incidentDetails: {
+          ...prev.incidentDetails,
+          description: prev.incidentDetails.description ? prev.incidentDetails.description + " " + transcript : transcript
+        }
+      }));
+      setIsRecording(false);
+    };
+
+    recognition.onspeechend = () => {
+      recognition.stop();
+      setIsRecording(false);
+    }
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsRecording(false);
+      alert("Error occurred in recognition: " + event.error);
+    }
   }
 
   return (
@@ -438,18 +470,18 @@ export default function FileComplaintPage() {
                 {/* Voice Recording */}
                 <div className="mb-6 p-6 border-2 border-dashed border-muted-foreground/25 rounded-lg text-center">
                   <Mic className="mx-auto h-12 w-12 text-primary mb-4" />
-                  <h3 className="font-semibold mb-2">Voice Statement</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Record your statement for a more detailed account</p>
+                  <h3 className="font-semibold mb-2">Voice Statement / Auto-Fill</h3>
+                  <p className="text-sm text-muted-foreground mb-4">Click below to speak via microphone. AI will transcribe it.</p>
                   <Button onClick={startRecording} disabled={isRecording} variant={isRecording ? "destructive" : "outline"} className="bg-transparent">
                     {isRecording ? (
                       <>
                         <div className="animate-pulse h-2 w-2 bg-red-500 rounded-full mr-2 inline-block" />
-                        Recording...
+                        Listening...
                       </>
                     ) : (
                       <>
                         <Mic className="h-4 w-4 mr-2 inline-block" />
-                        Start Recording
+                        Start Voice Typing
                       </>
                     )}
                   </Button>
