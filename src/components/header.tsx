@@ -20,11 +20,9 @@ export function Header() {
 
   const navigation = [
     { name: t.nav.home, href: "/" },
+    { name: "🛡️ Toolkit", href: "/tools" }, // New consolidated link
     { name: t.nav.verify, href: "/verify" },
-    { name: t.nav.scamDetector, href: "/tools/scam-detector" },
-    { name: t.nav.heatmap, href: "/tools/heatmap" },
     { name: t.nav.legalAid, href: "/legal-aid" },
-    { name: t.nav.smsReport, href: "/tools/sms-report" },
     { name: t.nav.quiz, href: "/quiz" },
     { name: t.nav.safety, href: "/safety" },
   ]
@@ -40,7 +38,16 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          {!isSeniorMode && (
+          {isSeniorMode ? (
+            <nav className="hidden md:flex items-center">
+              <Link
+                href="/"
+                className="bg-primary text-white px-6 py-2 rounded-lg text-xl font-bold hover:bg-primary/90 shadow-md flex items-center gap-2"
+              >
+                <span>🏠</span> {t.nav.home}
+              </Link>
+            </nav>
+          ) : (
             <nav className="hidden md:flex items-center space-x-6">
               {navigation.map((item) => (
                 <Link
@@ -56,6 +63,28 @@ export function Header() {
 
           {/* Emergency Button & Auth */}
           <div className="flex items-center space-x-4">
+
+            {/* Notification Bell */}
+            {!isSeniorMode && (
+              <div className="relative cursor-pointer hover:bg-muted/50 p-2 rounded-full transition-colors group">
+                <div className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full animate-pulse ring-2 ring-background" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-muted-foreground group-hover:text-foreground"
+                >
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg>
+              </div>
+            )}
 
             <Button
               onClick={toggleSeniorMode}

@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button"
 import { FileText, Clock, CheckCircle, AlertTriangle, ArrowRight, Plus, Shield } from "lucide-react"
 import Link from "next/link"
 import PanicButton from "@/components/panic-button"
+import { SafetyChecklist } from "@/components/safety-checklist"
+import { ZeroFirCard } from "@/components/zero-fir-card"
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -254,6 +256,12 @@ export default function DashboardPage() {
 
           {/* Panic Button */}
           <PanicButton />
+
+          {/* New Safety Checklist Widget */}
+          <SafetyChecklist />
+
+          {/* Zero FIR Rights Card */}
+          <ZeroFirCard />
 
           {/* Quick Tips or Actions */}
           <Card className="glassy">

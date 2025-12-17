@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Filter } from "lucide-react"
+import { CrimeTrendChart } from "@/components/crime-trend-chart"
 
 export default function PoliceDashboardPage() {
   const { user } = useAuth()
@@ -81,6 +82,51 @@ export default function PoliceDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-900 dark:text-green-400">{resolvedCount}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Analytics Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <CrimeTrendChart />
+        </div>
+        <Card className="glassy border-none shadow-xl bg-slate-900 text-white relative overflow-hidden group">
+          <div className="absolute inset-0 bg-[url('https://media.istockphoto.com/id/1329462503/vector/india-map-network-connection.jpg?s=612x612&w=0&k=20&c=L_YcnrE-vOqYXrV6HnJdFk7-8FzWz_5Qx3l_2g6Z0gM=')] bg-cover bg-center opacity-30 group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
+          <CardHeader className="relative z-10">
+            <CardTitle className="text-white flex items-center gap-2">
+              <div className="h-3 w-3 bg-red-500 rounded-full animate-ping" />
+              Live Cyber Heatmap
+            </CardTitle>
+            <CardDescription className="text-slate-300">Real-time threat monitoring across regions</CardDescription>
+          </CardHeader>
+          <CardContent className="relative z-10 mt-20">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <span>Maharashtra</span>
+                <span className="text-red-400 font-bold">High Activity</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-full bg-red-500 w-[85%]" />
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <span>Delhi NCR</span>
+                <span className="text-amber-400 font-bold">Moderate</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-full bg-amber-500 w-[65%]" />
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <span>Karnataka</span>
+                <span className="text-blue-400 font-bold">Normal</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 w-[45%]" />
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

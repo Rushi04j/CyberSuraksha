@@ -165,7 +165,12 @@ const en = {
     },
     safety: safetyEn, // Explicitly keeping safetyEn structure but simplified
     ai: {}, // Placeholder to keep existing structure valid if extended later
-    widgets: {},
+    widgets: {
+        safetyScore: "Safety Score",
+        safetyLevel: "Safe",
+        class: "Reports",
+        downloadReport: "Download PDF"
+    },
     seniorMode: seniorModeEn,
     panicButton: panicButtonEn,
     tools: toolsEn
@@ -258,7 +263,12 @@ const hi = {
     },
     safety: safetyEn,
     ai: {},
-    widgets: {},
+    widgets: {
+        safetyScore: "सुरक्षा स्कोर",
+        safetyLevel: "सुरक्षित",
+        class: "रिपोर्ट्स",
+        downloadReport: "PDF डाउनलोड करें"
+    },
     seniorMode: {
         title: "सरल मोड सक्रिय",
         subtitle: "वरिष्ठ नागरिकों के लिए आसान इंटरफ़ेस।",

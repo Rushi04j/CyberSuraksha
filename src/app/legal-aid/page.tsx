@@ -42,7 +42,7 @@ export default function LegalAidPage() {
                 </p>
             </div>
 
-            <div className="max-w-xl mx-auto mb-12">
+            <div className="max-w-xl mx-auto mb-12 space-y-6">
                 <Card>
                     <CardContent className="pt-6">
                         <Label className="mb-2 block">{t.tools.incidentType}</Label>
@@ -57,8 +57,23 @@ export default function LegalAidPage() {
                                 <SelectItem value="crypto">Crypto & Investment Scam</SelectItem>
                             </SelectContent>
                         </Select>
-
                         {category && <p className="text-sm text-muted-foreground mt-2">Showing specialists for: <span className="font-semibold text-foreground capitalize">{category}</span></p>}
+                    </CardContent>
+                </Card>
+
+                <Card className="border-green-400 bg-green-50 dark:bg-green-900/10 dark:border-green-800 animate-pulse">
+                    <CardContent className="p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
+                                <div className="h-3 w-3 rounded-full bg-green-500 animate-ping absolute top-0 left-0"></div>
+                                <div className="h-3 w-3 rounded-full bg-green-500 relative"></div>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-green-800 dark:text-green-400">Instant Student Volunteer</h3>
+                                <p className="text-xs text-green-700 dark:text-green-500">3 Law Students are online to help you (Free)</p>
+                            </div>
+                        </div>
+                        <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">Connect Now</Button>
                     </CardContent>
                 </Card>
             </div>

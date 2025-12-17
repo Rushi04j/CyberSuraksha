@@ -69,17 +69,31 @@ export default function SignInPage() {
             )}
           </Button>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4 text-center text-sm text-muted-foreground">
-          <div>
-            {t.auth.notAccount}{" "}
-            <Link href="/signup" className="text-primary hover:underline font-medium">
-              {t.auth.register}
-            </Link>
+        <CardFooter className="flex flex-col space-y-4 text-center text-sm text-muted-foreground bg-slate-50 dark:bg-slate-900/50 p-6 rounded-b-xl border-t">
+          <div className="w-full space-y-3">
+            <div className="flex justify-between items-center text-xs uppercase tracking-widest text-muted-foreground font-semibold">
+              <span>Other Access</span>
+              <span className="h-px bg-border flex-1 ml-4"></span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" asChild className="h-10 border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-900 dark:hover:bg-blue-900/20">
+                <Link href="/police/signin">
+                  <Shield className="mr-2 h-4 w-4" /> Police Login
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="h-10 border-orange-200 hover:bg-orange-50 hover:text-orange-700 dark:border-orange-900 dark:hover:bg-orange-900/20">
+                <Link href="/vle/dashboard">
+                  <Lock className="mr-2 h-4 w-4" /> VLE / Sarpanch
+                </Link>
+              </Button>
+            </div>
           </div>
-          <div className="pt-2 border-t w-full">
-            {t.auth.areYouPolice}{" "}
-            <Link href="/police/signin" className="text-blue-600 hover:underline font-bold">
-              {t.auth.policeLink}
+
+          <div className="pt-2 text-xs">
+            {t.auth.notAccount}{" "}
+            <Link href="/signup" className="text-primary hover:underline font-bold">
+              {t.auth.register}
             </Link>
           </div>
         </CardFooter>

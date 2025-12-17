@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { AlertCircle, CheckCircle2, ChevronRight, ChevronLeft, Upload, MapPin, Calendar, FileText, ShieldAlert } from "lucide-react"
+import { VoiceInput } from "@/components/voice-input"
 
 export default function FileComplaintPage() {
     const router = useRouter()
@@ -129,7 +130,10 @@ export default function FileComplaintPage() {
                             />
                         </div>
                         <div className="space-y-3">
-                            <Label htmlFor="desc">Detailed Description</Label>
+                            <div className="flex justify-between items-center">
+                                <Label htmlFor="desc">Detailed Description</Label>
+                                <VoiceInput onTranscript={(text) => handleChange("description", (formData.description || "") + " " + text)} />
+                            </div>
                             <Textarea
                                 id="desc"
                                 className="min-h-[150px]"
