@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+📘 CyberSuraksha
+CyberSuraksha – Multilingual Cybercrime Reporting Platform
 
-## Getting Started
+CyberSuraksha is a full-stack web application designed to simplify cybercrime reporting through a structured, user-friendly interface. The platform focuses on real-world usability by enabling users to submit incident details securely and access the system through authenticated workflows.
 
-First, run the development server:
+This project demonstrates end-to-end full-stack development, including frontend UI design, backend API development, authentication, and relational database integration.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔧 Tech Stack
+Frontend
+React.js
+JavaScript (ES6+)
+HTML5
+CSS3
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend
+Node.js
+Express.js
+Database & Auth
+Supabase (PostgreSQL)
+Supabase Authentication
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+APIs
+RESTful APIs
+JSON-based client–server communication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+✨ Key Features
 
-## Learn More
+User authentication using Supabase Auth
+Secure cybercrime report submission
+Input validation and structured data handling
+Multilingual UI support
+REST API–based frontend–backend integration
+Relational database design using PostgreSQL
 
-To learn more about Next.js, take a look at the following resources:
+📁 Project Structure (High Level)
+/frontend   → React UI
+/backend    → Node.js + Express APIs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+⚙️ Setup Instructions
+1. Clone the repository
+git clone https://github.com/your-username/cybersuraksha.git
+cd cybersuraksha
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Install dependencies
+npm install
 
-## Deploy on Vercel
+3. Environment variables
+Create a .env file and add:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Run the application
+npm start
+
+📌 Notes
+
+The project is built as a practical full-stack application, not a production law enforcement system.
+Focus areas include API design, authentication workflows, and frontend–backend integration.
+Future improvements may include advanced report tracking and analytics.
+
+📄 License
+
+This project is for educational and demonstration purposes.
